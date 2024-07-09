@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+case $1 in
+    remove)
+        # Lock the user
+        usermod -L -e 1 oem || true
+        ;;
+esac
+
+exit 0

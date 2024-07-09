@@ -1,0 +1,16 @@
+Source: radxa-oobe
+Maintainer: "Radxa Computer Co., Ltd" <dev@radxa.com>
+Section: admin
+Priority: standard
+Standards-Version: 4.6.0
+Build-Depends: debhelper (>=12~),
+               devscripts,
+               lintian
+
+Package: radxa-oobe
+Architecture: all
+Section: admin
+Priority: standard
+Depends: ${misc:Depends},
+Description: Radxa OOBE support package
+ This package provides the necessary support for the Radxa OOBE.
