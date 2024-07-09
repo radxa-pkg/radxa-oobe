@@ -1,0 +1,2 @@
+# Set oem account for passwordless sudo
+oem ALL=(ALL:ALL) NOPASSWD: ALL

@@ -1,0 +1,6 @@
+// Allow oem account to execute any actions without password authentication
+polkit.addRule(function(action, subject) {
+    if (subject.user == "oem") {
+        return polkit.Result.YES;
+    }
+});
