@@ -7,15 +7,11 @@ if [ "$1" = "configure" ]; then
     systemd-sysusers || true
     # Create tempfiles
     systemd-tmpfiles --create || true
-    if [ -e /etc/lightdm/lightdm.conf ]; then
-        sed -i -e s/"#autologin-user="/"autologin-user=oem"/g /etc/lightdm/lightdm.conf
-        sed -i -e s/"#autologin-user-timeout=0"/"autologin-user-timeout=0"/g /etc/lightdm/lightdm.conf
-        sed -i -e s/"#autologin-session="/"autologin-session=xfce"/g /etc/lightdm/lightdm.conf
-    fi
-
-    if [ -e /etc/gdm3/daemon.conf ]; then
-        sed -i s/"\[daemon\]"/"\[daemon\]\nAutomaticLogin=oem\nAutomaticLoginEnable=True"/g /etc/gdm3/daemon.conf
-    fi
+    rsetup set_autologin_status lightdm.service oem on
+    rsetup set_autologin_status gdm.service oem on
+    rsetup set_autologin_status sddm.service oem on
+    rsetup set_autologin_status getty@.service oem on
+    rsetup set_autologin_status serial-getty@.service oem on
 fi
 
 #DEBHELPER#

@@ -6,6 +6,11 @@ set -e
 case $1 in
     remove)
         # Lock the user
+        rsetup set_autologin_status lightdm.service oem off
+        rsetup set_autologin_status gdm.service oem off
+        rsetup set_autologin_status sddm.service oem off
+        rsetup set_autologin_status getty@.service oem off
+        rsetup set_autologin_status serial-getty@.service oem off
         usermod -L -e 1 oem || true
         ;;
 esac
