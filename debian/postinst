@@ -7,11 +7,11 @@ if [ "$1" = "configure" ]; then
     systemd-sysusers || true
     # Create tempfiles
     systemd-tmpfiles --create || true
-    rsetup set_autologin_status lightdm.service oem on
-    rsetup set_autologin_status gdm.service oem on
-    rsetup set_autologin_status sddm.service oem on
-    rsetup set_autologin_status getty@.service oem on
-    rsetup set_autologin_status serial-getty@.service oem on
+    rsetup set_autologin_status oem lightdm.service ON
+    rsetup set_autologin_status oem gdm.service ON
+    rsetup set_autologin_status oem sddm.service ON
+    rsetup set_autologin_status oem getty@.service ON
+    rsetup set_autologin_status oem serial-getty@.service ON
 fi
 
 #DEBHELPER#
