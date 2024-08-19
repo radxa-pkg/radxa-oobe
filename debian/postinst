@@ -3,7 +3,7 @@
 set -e
 
 if [ "$1" = "configure" ]; then
-    # Create the user radxa 
+    # Create the Radxa OEM user
     systemd-sysusers || true
     # Create tempfiles
     systemd-tmpfiles --create || true
