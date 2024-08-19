@@ -7,7 +7,7 @@ case $1 in
     remove)
         # Lock the user
         rsetup set_autologin_status oem lightdm.service OFF
-        rsetup set_autologin_status oem gdm.service OFF
+        rsetup set_autologin_status oem gdm.service OFF || true
         rsetup set_autologin_status oem sddm.service OFF
         rsetup set_autologin_status oem getty@.service OFF
         rsetup set_autologin_status oem serial-getty@.service OFF

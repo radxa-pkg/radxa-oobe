@@ -8,7 +8,7 @@ if [ "$1" = "configure" ]; then
     # Create tempfiles
     systemd-tmpfiles --create || true
     rsetup set_autologin_status oem lightdm.service ON
-    rsetup set_autologin_status oem gdm.service ON
+    rsetup set_autologin_status oem gdm.service ON || true
     rsetup set_autologin_status oem sddm.service ON
     rsetup set_autologin_status oem getty@.service ON
     rsetup set_autologin_status oem serial-getty@.service ON
