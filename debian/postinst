@@ -5,6 +5,10 @@ set -e
 if [ "$1" = "configure" ]; then
     # Create the Radxa OEM user
     systemd-sysusers || true
+    passwd -d oem
+    # Must be in the sudo group to be considered by polkit as a system admin
+    # /etc/polkit-1/localauthority.conf.d/51-debian-sudo.conf
+    usermod -a -G sudo oem
     # Create tempfiles
     systemd-tmpfiles --create || true
     rsetup set_autologin_status oem lightdm.service ON
