@@ -11,7 +11,8 @@ Package: radxa-oobe
 Architecture: all
 Section: admin
 Priority: standard
-Depends: ${misc:Depends},
+Depends: calamares-settings-radxa,
          rsetup,
+         ${misc:Depends},
 Description: Radxa OOBE support package
  This package provides the necessary support for the Radxa OOBE.
