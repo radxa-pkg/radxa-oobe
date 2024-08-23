@@ -11,7 +11,7 @@ case $1 in
         rsetup set_autologin_status oem getty@.service OFF
         rsetup set_autologin_status oem serial-getty@.service OFF
         userdel -f oem
-        rm -f /etc/ssh/sshd_config.d/99-oem.conf /etc/sudoers.d/99-oem
+        rm -rf /etc/ssh/sshd_config.d/99-oem.conf /etc/sudoers.d/99-oem /var/lib/oem-setup/
         ;;
 esac
 
