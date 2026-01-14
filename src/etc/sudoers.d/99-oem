@@ -1,2 +1,6 @@
 # Set oem account for passwordless sudo
 oem ALL=(ALL:ALL) NOPASSWD: ALL
+
+# Theme integration
+# https://calamares.euroquis.nl/docs/deploy-configuration#how-to-integrate-calamares-with-the-used-system-style-and-theme
+Defaults env_keep += "QTDIR PATH QT_PLUGIN_PATH QT_INCLUDE_PATH QML2_IMPORT_PATH KDE_SESSION_VERSION KDE_FULL_SESSION"
