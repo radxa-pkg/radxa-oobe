@@ -1,0 +1,10 @@
+{
+  "*": {
+    "Releases": [
+      "trixie",
+      "trixie-test",
+      "sid",
+      "sid-test"
+    ]
+  }
+}
