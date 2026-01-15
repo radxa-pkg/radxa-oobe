@@ -12,6 +12,7 @@ Architecture: all
 Section: admin
 Priority: standard
 Depends: calamares-settings-radxa,
+         jq,
          rsetup,
          ${misc:Depends},
 Description: Radxa OOBE support package
