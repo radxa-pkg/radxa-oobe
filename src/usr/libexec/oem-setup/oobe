@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+__oobe_welcome() {
+	msgbox "Welcome to RadxaOS
+
+Your system is almost ready. We will ask you a few basic questions to finish set up."
+}
+
+__oobe_add_account() {
+	if [[ $account_added == true ]]; then
+		if ! yesno "You have already added an account.
+
+Do you wish to add another one?"; then
+			return 1
+		fi
+	fi
+
+	local username new_password new_password2=2
+
+	while [[ -z $username ]]; do
+		if ! username=$(inputbox "Please enter your account name:" ""); then
+			return 1
+		fi
+
+		if [[ -z $username ]]; then
+			msgbox "Account name cannot be empty."
+		fi
+	done
+
+	while [[ $new_password != "$new_password2" ]]; do
+		if ! new_password=$(passwordbox "Please enter the password for $username:"); then
+			return 2
+		fi
+
+		if ! new_password2=$(passwordbox "Please confirm the password for $username:"); then
+			return 3
+		fi
+
+		if [[ $new_password != "$new_password2" ]]; then
+			msgbox "Passwords do not match. Please try again."
+		fi
+	done
+
+	infobox "Setting up account for $username..."
+
+	sudo rsetup add_user "$username" "$new_password"
+	sudo rsetup user_append_group "$username" sudo
+	sudo rsetup user_append_group "$username" audio
+	sudo rsetup user_append_group "$username" video
+	sudo rsetup user_append_group "$username" plugdev
+	sudo rsetup user_append_group "$username" render
+	sudo rsetup user_append_group "$username" gpio
+	sudo rsetup user_append_group "$username" i2c
+	sudo rsetup user_append_group "$username" spidev
+	sudo rsetup user_append_group "$username" pwm
+
+	account_added=true
+}
+
+__oobe_change_hostname() {
+	local cur_name item
+	cur_name="$(hostname)"
+
+	while [[ -z $item ]]; do
+		if ! item=$(inputbox "Please enter the new hostname:" "$cur_name"); then
+			return 1
+		fi
+
+		if [[ -z $item ]]; then
+			msgbox "Hostname cannot be empty."
+		fi
+
+		if [[ $item == "$cur_name" ]]; then
+			return
+		fi
+	done
+
+	infobox "Updating host name as $item..."
+
+	if ! sudo rsetup update_hostname "$item"; then
+		sudo rsetup update_hostname "$cur_name" || true
+		msgbox "An error occurred when trying to change hostname to '$item'."
+		return 2
+	fi
+}
+
+__oobe_complete() {
+	if [[ $account_added == false ]]; then
+		msgbox "You must add an account before completing the setup."
+		return 1
+	fi
+
+	msgbox "Setup completed
+
+You have completed the setup.
+The current session will end now, and you can log in with your new account."
+
+	sudo /usr/libexec/oem-setup/cleanup
+}
+
+tui_main() {
+	local account_added=false
+
+	wizard_init
+
+	while true; do
+		menu_init
+		menu_add __oobe_welcome "Welcome"
+		menu_add __oobe_add_account "Add Account"
+		menu_add __oobe_change_hostname "Change Hostname"
+		menu_add __oobe_complete "Complete"
+		wizard_call "Please select a task:"
+		if menu_is_cancelled; then
+			return
+		elif wizard_is_complete; then
+			return
+		fi
+	done
+}
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	if [[ -f "$SCRIPT_DIR/../../lib/librtui/tui.sh" ]]; then
+		# shellcheck source=/dev/null
+		source "$SCRIPT_DIR/../../lib/librtui/tui.sh"
+	elif [[ -f "/usr/lib/librtui/tui.sh" ]]; then
+		# shellcheck source=/dev/null
+		source "/usr/lib/librtui/tui.sh"
+	else
+		echo "Missing librtui. Please make sure you have installed it." >&2
+		return 1
+	fi
+
+	local DEBUG="${DEBUG:-false}"
+
+	if [[ -n $DISPLAY ]]; then
+		echo "Text mode OOBE setup will not launch in graphical environment." >&2
+		return
+	fi
+
+	tui_start tui_main "Radxa OOBE"
+}
+
+main "$@"

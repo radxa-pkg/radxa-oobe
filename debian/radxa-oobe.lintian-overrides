@@ -1,0 +1,2 @@
+# We are bash scripts, not dash scripts
+radxa-oobe: shell-script-fails-syntax-check
