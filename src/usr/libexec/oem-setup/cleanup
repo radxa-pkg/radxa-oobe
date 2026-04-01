@@ -2,7 +2,7 @@
 
 # THIS SCRIPT MUST BE RUN AS ROOT!
 
-mapfile -t SESSIONS < <(loginctl list-sessions -o json --json=short | jq -re '.[].session')
+mapfile -t SESSIONS < <(loginctl list-sessions -o json | jq -re '.[].session')
 
 # We depend on calamares-settings-radxa, so it will be removed as well
 apt-get autoremove -y radxa-oobe
