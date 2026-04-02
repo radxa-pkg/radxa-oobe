@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 __oobe_init() {
+	if [[ ! -f /etc/.radxa-oobe-first-boot ]]; then
+		return
+	fi
+
 	infobox "Finishing system setup for the first boot..."
 
 	sudo rsetup update_generic_hostname radxa-a733
@@ -16,6 +20,8 @@ __oobe_init() {
 	sudo rsetup resize_root
 
 	sudo rsetup disable_service systemd-networkd
+
+	sudo rm /etc/.radxa-oobe-first-boot
 }
 
 __oobe_welcome() {
@@ -119,11 +125,12 @@ The current session will end now, and you can log in with your new account."
 tui_main() {
 	local account_added=false
 
+	__oobe_init
+
 	wizard_init
 
 	while true; do
 		menu_init
-		menu_add __oobe_init "First boot setup"
 		menu_add __oobe_welcome "Welcome"
 		menu_add __oobe_add_account "Add Account"
 		menu_add __oobe_change_hostname "Change Hostname"
