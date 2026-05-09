@@ -4,7 +4,9 @@
       "trixie",
       "trixie-test",
       "sid",
-      "sid-test"
+      "sid-test",
+      "resolute",
+      "resolute-test"
     ]
   }
 }
